@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./main.js" defer></script>
+  <title>registrationForm</title>
+</head>
+<body class="body body--darkened">
+<main class="main">
+  <div id="root">
+    <form class="form" novalidate data-js-form>
+      <div class="form__main container">
+        <div class="form__body">
+          <div class="form__field">
+            <label for="email" class="form__label" data-form-label>Enter email</label>
+            <input type="email" class="form__input" data-form-input id="email" name="email"
+                   placeholder="Enter email" autocomplete="off"
+                   minlength="6" maxlength="30" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,4}$"
+                   aria-errormessage="emailErrors"
+                   required>
+            <span class="field__errors" id="emailErrors" data-js-form-field-errors></span>
+          </div>
+          <div class="form__field">
+            <label for="password" class="form__label" data-form-label>Enter password</label>
+            <input type="password" class="form__input" data-form-input id="password" name="password"
+                   placeholder="Enter password" autocomplete="currenPassword"
+                   minlength="6" maxlength="16" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                   title="Пароль должен быть от 6 до до 16 символов, включать как минимум одну цифру, одну заглавную и одну строчную букву"
+                   aria-errormessage="passwordErrors"
+                   required>
+            <span class="field__errors" id="passwordErrors" data-js-form-field-errors></span>
+          </div>
+          <div class="form__field">
+            <label for="repeatPassword" class="form__label" data-form-label>Repeat password</label>
+            <input type="password" class="form__input" data-form-input id="repeatPassword" name="repeatPassword"
+                   placeholder="Repeat password"  autocomplete="repeatPassword"
+                   minlength="6" maxlength="16"
+                   aria-errormessage="repeatPasswordErrors"
+                   required>
+            <span class="field__errors" id="repeatPasswordErrors" data-js-form-field-errors></span>
+          </div>
+          <button class="form__button" type="submit" data-form-button>
+            Зарегистрироватся
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="overlay-successfully" id="overlaySuccessfully">
+      <span class="overlay-successfully__text">
+        Регистрация успешна
+      </span>
+    </div>
+  </div>
+</main>
+</body>
+</html>
