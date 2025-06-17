@@ -25,6 +25,7 @@ class FormsValidation {
         fieldErrors: '[data-js-form-field-errors]'
     }
 
+    // Объект, сопоставляющий различные типы ошибок валидации (подобные тем, что находятся в ValidityState)
     errorMessages = {
         valueMissing: () => 'Пожалуйста, заполните это поле',
         patternMismatch: ({title}) => title || 'Данные не соотвутствуют формату',
@@ -35,28 +36,45 @@ class FormsValidation {
 
     constructor() {
         this.form = formElement
+        // Вызывает метод bindEvents настройки слушателей событий
         this.bindEvents()
     }
 
-    manageErrors(fieldControlElement, errorMessages) {
-        const fieldErrorsElement = fieldControlElement.parentElement.querySelector(this.selectors.fieldErrors)
 
+    // Этот метод отвечает за отображение или очистку сообщений об ошибках для одного поля формы.
+    // fieldControlElement: Конкретный элемент ввода (например, inputEmailElement), для которого управляются ошибки.
+    manageErrors(fieldControlElement, errorMessages) {
+        // parentElement для этого input будет его непосредственный родительский элемент, то есть <div class="form__field">
+        const fieldErrorsElement = fieldControlElement.parentElement.querySelector(this.selectors.fieldErrors)
+        /*
+        fieldErrorsElement.innerHTML: Эта объединённая HTML-строка затем вставляется в fieldErrorsElement, отображая сообщения об ошибках.
+        */
         fieldErrorsElement.innerHTML = errorMessages
+            // проходит по массиву массиву errorMessages. Для каждого сообщения он создает <span> с классом field__error содержащий сообщение.join()
             .map((message) => `<span class="field__error">${message}</span>`)
             .join('')
     }
 
+    // fieldControlElement: Конкретный элемент ввода (например, inputEmailElement)
     validateField(fieldControlElement) {
+        // Извлекает объект ValidityState для fieldControlElement.
         const errors = fieldControlElement.validity
+        // Пустой массив для сбора всех соответствующих сообщений об ошибках.
         const errorMessages = []
 
-        // Сначала преобразуем объект в массив пар ключ-значение, затем итерируемся по этому массиву
+        /*
+        Сначала преобразуем объект в массив пар ключ-значение, затем итерируемся по этому массиву
+         Синтаксис ([errorType, getErrorMessage]) говорит: "Возьми массив, который ты сейчас обрабатываешь (['valueMissing', функция]), и распакуй его:
+         первый элемент (ключ) помести в новую переменную errorType, а второй элемент (значение ) помести в новую переменную getErrorMessage".
+         */
         Object.entries(this.errorMessages).forEach(([errorType, getErrorMessage]) => {
+            // errors — это объект ValidityState, который содержит булевы свойства
+            // errorType: Это переменная, которая в каждой итерации цикла принимает значение ключа из вашего объекта this.errorMessages.
             if (errors[errorType]) {
                 errorMessages.push(getErrorMessage(fieldControlElement))
             }
         })
-
+        // manageErrors отвечает за отображение или скрытие сообщений об ошибках для конкретного поля формы.
         this.manageErrors(fieldControlElement, errorMessages)
         fieldControlElement.ariaInvalid = errorMessages.length > 0;
         // console.log(errorMessages)
